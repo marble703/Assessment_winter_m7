@@ -16,22 +16,44 @@
  分别调用 calculateArea 函数，并显示结果。
  */
 
- #include <iostream>
+#include <iostream>
 
 class Shape {
 public:
-    
+    virtual double calculateArea() const = 0;
 };
 
 class Circle : public Shape {
+private:
+    double r;
 
+public:
+    Circle(double rad) : r(rad) {}
+
+    double calculateArea() const override {
+        return 3.14159 * r * r;
+    }
 };
 
-
 class Rectangle : public Shape {
+private:
+    double w;
+    double h;
 
+public:
+    Rectangle(double weight, double height) : w(weight), h(height) {}
+
+    double calculateArea() const override {
+        return w * h;
+    }
 };
 
 int main() {
-    //补充你的代码
+    Circle circle(5);
+    Rectangle rectangle(4, 6);
+
+    std::cout << "Circle area: " << circle.calculateArea() << std::endl;
+    std::cout << "Rectangle area: " << rectangle.calculateArea() << std::endl;
+
+    return 0;
 }

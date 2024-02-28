@@ -20,23 +20,44 @@ Length of Longest Increasing Subsequence: 6
 
 确保执行效率高，能处理较大的输入向量。考虑使用动态编程或其他优化算法来解决问题。
 
-提示：最长递增子序列（LIS）问题是在给定序列中找到最长子序列的问题，
+提示：最长递增子序列（LongestIncreasingSubsequence）问题是在给定序列中找到最长子序列的问题，
  */
 
 
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 class LongestIncreasingSubsequence {
 public:
     static pair<int, vector<int>> findLongestIncreasingSubsequence(const vector<int>& nums) {
-        // TODO: 添加你的代码，实现你的功能
+        int n = nums.size();
+        vector<int> ans(n, 1);
+        vector<int> arr(n, -1);
+
+        for (int i = 1; i < n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (nums[i] > nums[j] && ans[i] < ans[j] + 1) {
+                    ans[i] = ans[j] + 1;
+                    arr[i] = j;
+                }
+            }
+        }
+
         int maxLength = 0;
         vector<int> longestSubsequence;
 
-        return { maxLength, longestSubsequence };
+        int end = distance(ans.begin(), max_element(ans.begin(), ans.end()));
+        int maxLength = *max_element(ans.begin(), ans.end());
+        while (end != -1) {
+            longestSubsequence.push_back(nums[end]);
+            end = arr[end];
+        }
+        reverse(longestSubsequence.begin(), longestSubsequence.end());
+
+        return {maxLength, longestSubsequence};
     }
 };
 
@@ -55,3 +76,4 @@ int main() {
 
     return 0;
 }
+

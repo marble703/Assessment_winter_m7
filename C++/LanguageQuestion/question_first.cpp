@@ -15,22 +15,28 @@
 
  */
 
- #include <iostream>
+#include <iostream>
 #include <string>
 
 class Person {
+private:
+    std::string name;
+    int age;
 
+public:
+    Person(const std::string& Name, int Age) : name(Name), age(Age) {}
 
-    // 参数化构造函数
-    Person(const std::string& personName, int personAge) {
-        
-    }
-
-    // 成员函数 display，用于打印姓名和年龄
     void display() const {
+        std::cout << "Name: " << name << ", Age: " << age << std::endl;
     }
 };
 
 int main() {
-    //实现你的功能
+    Person person1("Angela", 100);
+    Person person2("Nozomi", 42);
+
+    person1.display();
+    person2.display();
+
+    return 0;
 }
