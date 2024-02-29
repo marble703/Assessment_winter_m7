@@ -1,0 +1,3 @@
+/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection/CMakeFiles/cv.dir
+/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection/CMakeFiles/edit_cache.dir
+/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection/CMakeFiles/rebuild_cache.dir
