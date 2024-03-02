@@ -6,14 +6,14 @@
 #include <opencv2/opencv.hpp>
 
 // 伽马矫正函数  
-cv::Mat gammaCorrection(const cv::Mat& src, double gamma) {  
+cv::Mat gammaCorrection(const cv::Mat& src) {  
     cv::Mat dst;  
     dst.create(src.size(), src.type());  
 
     cv::Mat floatSrc;  
     src.convertTo(floatSrc, CV_32F);  
 
-    cv::pow(floatSrc, 2.0 / gamma, dst);  
+    cv::pow(floatSrc, 2, dst);  
 
     cv::Mat normalizedDst;  
     cv::normalize(dst, normalizedDst, 0, 255, cv::NORM_MINMAX, CV_8U);  
@@ -26,8 +26,7 @@ int main()
     cv::Mat src = cv::imread("src.jpg", cv::IMREAD_GRAYSCALE);
 
     // 伽马矫正  
-    double gamma = 2;
-    cv::Mat gammaCorrected = gammaCorrection(src, gamma);  
+    cv::Mat gammaCorrected = gammaCorrection(src);  
 
     // 高斯滤波
     cv::Mat blurred;
@@ -49,8 +48,7 @@ int main()
     cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
     cv::dilate(src, dilated_image, kernel);
 
-
-    cv::imshow("Edges Detected", edges);
+    cv::imshow("edge image", edges);
     cv::imwrite("edges_image.png", edges);
 
     cv::waitKey(0);
