@@ -13,7 +13,7 @@ int main()
     imshow("image1_gray", image1_gray);
 
     output_image = image1_gray.clone();
-    double gamma = 2;
+    double gamma =2;
     for (int i = 0; i < image1_gray.rows; i++)
     {
         for (int j = 0; j < image1_gray.cols; j++)
