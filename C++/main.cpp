@@ -48,7 +48,6 @@ int main() {
     std::cout << "\nA*B\n";
     std::cout << A * B;
 
-
     int row_t = 2, col_t = 2; //测试
     int** arr_t = new int*[2];
     for (int i = 0; i < 2; ++i) {
