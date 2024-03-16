@@ -1,8 +1,3 @@
-//https://www.cnblogs.com/frombeijingwithlove/p/4226489.html
-//https://www.zhihu.com/question/27042602/answer/37301260
-
-//(962,1104),(1704,1120)
-//(1213,2539),(2208,2418)
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
