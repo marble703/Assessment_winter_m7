@@ -53,7 +53,7 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection"
+CMAKE_SOURCE_DIR = /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection"
@@ -120,6 +120,6 @@ CMakeFiles/cv.dir/clean:
 .PHONY : CMakeFiles/cv.dir/clean
 
 CMakeFiles/cv.dir/depend:
-	cd "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection" "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection" "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection" "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection" "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection/CMakeFiles/cv.dir/DependInfo.cmake" --color=$(COLOR)
+	cd "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection" "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection" "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection/CMakeFiles/cv.dir/DependInfo.cmake" --color=$(COLOR)
 .PHONY : CMakeFiles/cv.dir/depend
 

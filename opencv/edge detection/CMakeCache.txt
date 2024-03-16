@@ -219,7 +219,7 @@ cv_BINARY_DIR:STATIC=/media/chenyian/Data/programme/Visual/Assessment_winter_m7/
 cv_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
-cv_SOURCE_DIR:STATIC=/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection
+cv_SOURCE_DIR:STATIC=/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv
 
 
 ########################
@@ -306,7 +306,7 @@ CMAKE_GENERATOR_PLATFORM:INTERNAL=
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
 //Source directory with the top level CMakeLists.txt file for this
 // project
-CMAKE_HOME_DIRECTORY:INTERNAL=/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection
+CMAKE_HOME_DIRECTORY:INTERNAL=/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv
 //Install .so files without execute permission.
 CMAKE_INSTALL_SO_NO_EXE:INTERNAL=1
 //ADVANCED property for variable: CMAKE_LINKER

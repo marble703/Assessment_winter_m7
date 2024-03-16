@@ -57,7 +57,7 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection"
+CMAKE_SOURCE_DIR = /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection"

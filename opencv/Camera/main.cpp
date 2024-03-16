@@ -11,7 +11,7 @@ int main() {
         cv::Mat frame;
         cap >> frame;
 
-        cv::imshow("Camera", frame);
+        cv::imshow("camera", frame);
 
         char key = cv::waitKey(10);
         if (key == 27) {

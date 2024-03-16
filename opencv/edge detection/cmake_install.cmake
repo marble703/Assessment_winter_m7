@@ -1,4 +1,4 @@
-# Install script for directory: /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/edge detection
+# Install script for directory: /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

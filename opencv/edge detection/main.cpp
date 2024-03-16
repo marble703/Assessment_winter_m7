@@ -1,56 +1,50 @@
-/*
-尽力了，为什么效果这么差
-*/
+//https://www.cnblogs.com/frombeijingwithlove/p/4226489.html
+//https://www.zhihu.com/question/27042602/answer/37301260
 
+//(962,1104),(1704,1120)
+//(1213,2539),(2208,2418)
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
-// 伽马矫正函数  
-cv::Mat gammaCorrection(const cv::Mat& src) {  
-    cv::Mat dst;  
-    dst.create(src.size(), src.type());  
+int main() {
+    // 读取图像
+    cv::Mat image = cv::imread("src.jpg");
 
-    cv::Mat floatSrc;  
-    src.convertTo(floatSrc, CV_32F);  
+    // 定义矩形目标的边缘四个顶点坐标
+    std::vector<cv::Point2f> srcPoints = {
+        cv::Point2f(962,1104),  // 左上
+        cv::Point2f(1704,1200),  // 右上
+        cv::Point2f(2180,2480),  // 右下
+        cv::Point2f(1213,2550)   // 左下
+    };
 
-    cv::pow(floatSrc, 2, dst);  
+    // 定义透视变换后的目标四个顶点坐标
+    std::vector<cv::Point2f> dstPoints = {
+        cv::Point2f(0, 0),                       // 左上
+        cv::Point2f(image.cols, 0),              // 右上
+        cv::Point2f(image.cols, image.rows),     // 右下
+        cv::Point2f(0, image.rows)               // 左下
+    };
 
-    cv::Mat normalizedDst;  
-    cv::normalize(dst, normalizedDst, 0, 255, cv::NORM_MINMAX, CV_8U);  
+
+    // 计算透视变换矩阵
+    cv::Mat perspectiveMatrix = cv::getPerspectiveTransform(srcPoints, dstPoints);
+    // 进行透视变换
+    cv::Mat warped;
+    cv::warpPerspective(image, warped, perspectiveMatrix, image.size());
+
+    int width = 360;  
+    int height = 680;  
+
+    cv::Mat resized;  
+
+    cv::resize(warped, resized, cv::Size(width, height), 0, 0, cv::INTER_LINEAR);  
+
   
-    return normalizedDst;  
-}  
-
-int main()
-{
-    cv::Mat src = cv::imread("src.jpg", cv::IMREAD_GRAYSCALE);
-
-    // 伽马矫正  
-    cv::Mat gammaCorrected = gammaCorrection(src);  
-
-    // 高斯滤波
-    cv::Mat blurred;
-    cv::GaussianBlur(gammaCorrected, blurred, cv::Size(3, 3), 0);
-
-    // Canny
-    double low_threshold = 150;
-    double high_threshold = 200;
-    cv::Mat edges;
-    cv::Canny(blurred, edges, low_threshold, high_threshold);
-
-   // 腐蚀
-    cv::Mat dilated;
-    cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
-    cv::dilate(edges, dilated, element);
-    
-    //膨胀
-    cv::Mat dilated_image;
-    cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
-    cv::dilate(src, dilated_image, kernel);
-
-    cv::imshow("edge image", edges);
-    cv::imwrite("edges_image.png", edges);
-
+    // 显示结果
+    cv::imshow("Warped Image", resized);
+    cv::imwrite("warped_image.jpg", resized);
     cv::waitKey(0);
+
     return 0;
 }
