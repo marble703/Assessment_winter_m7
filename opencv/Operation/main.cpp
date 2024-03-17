@@ -3,7 +3,7 @@
 
 int main()
 {
-    cv::Mat src = cv::imread("src.jpg", cv::IMREAD_GRAYSCALE);
+    cv::Mat src = cv::imread("src.png", cv::IMREAD_GRAYSCALE);
 
     // 定义核
     int kernel_size = 5;
@@ -32,8 +32,6 @@ int main()
     cv::imshow("Opened Image.jpg", opened_image);
     cv::imshow("Closed Image.jpg", closed_image);
 
-
-    cv::imwrite("Original Image.jpg", src);
     cv::imwrite("Eroded Image.jpg", eroded_image);
     cv::imwrite("Dilated Image.jpg", dilated_image);
     cv::imwrite("Opened Image.jpg", opened_image);
