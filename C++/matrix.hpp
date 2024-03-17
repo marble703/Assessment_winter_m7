@@ -51,12 +51,10 @@ public:
         }
     }
 
-
     Matrix(Matrix&& other) noexcept : rows(other.rows), cols(other.cols), matrix(nullptr) { // 构造函数，移动矩阵
         matrix = other.matrix;
         other.matrix = nullptr;
     }
-
 
 
     ~Matrix() { //析构函数
