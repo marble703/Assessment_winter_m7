@@ -7,6 +7,7 @@ using namespace std;
 void gamma_correct(const cv::Mat& img, cv::Mat& output_image){
     cv::Mat  image1_gray;
     cvtColor(img, image1_gray, COLOR_BGR2GRAY);
+    imshow("image1_gray", image1_gray);
 
     output_image = image1_gray.clone();
     double gamma = 0.5;
