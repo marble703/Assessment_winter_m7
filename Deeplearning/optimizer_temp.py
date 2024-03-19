@@ -15,11 +15,14 @@ import matplotlib.pyplot as plt
 
 from bayes_opt import BayesianOptimization
 
-n = 10
 batch_size_train = 100 #训练时的批次大小，根据拟合程度和硬件性能调整。太大过拟合，占用内存大，训练速度慢；太小易受噪声影响，易陷入局部最小值
 batch_size_test = 50   #测试时的批次大小，调整没啥影响，一般和训练批次大小相似
 #learning_rate = 1e-3   #学习率，控制参数调整幅度。太大不稳定，可能跳过全局最小值；太小收敛速度慢，易陷入局部最小值
 log_interval = 100     #日志输出间隔，控制输出训练信息频率
+
+init_points = 3
+n_iter = 2
+n = init_points + n_iter
 
 pbounds = { 'learning_rate_log': (-5, -1),  
             'beta1': (0.9, 0.999), #控制一阶矩（梯度的指数加权平均）的衰减速度,其实我也不知道这是啥
@@ -116,7 +119,7 @@ def train(learning_rate_log, beta1, beta2, weight_decay_log):
                                                                            100. * batch_idx / len(train_loader),
                                                                            loss.item()))
             train_losses.append(loss.item())
-            train_counter.append((batch_idx * 64) + ((epoch) * len(train_loader.dataset)))
+            train_counter.append((batch_idx * batch_size_train) + ((epoch) * len(train_loader.dataset)))
             torch.save(network.state_dict(), './model.pth')       #保存当前的神经网络状态
             torch.save(optimizer.state_dict(), './optimizer.pth') #保存当前的优化器状态
     return test(epoch)
@@ -147,11 +150,13 @@ bayesian_optimizer = BayesianOptimization(
 )
 
 bayesian_optimizer.maximize(
-    init_points=5,
-    n_iter=5,)
+    init_points = init_points,
+    n_iter = n_iter,)
 
 # train loss
 fig = plt.figure()
+
+
 plt.plot(train_counter, train_losses, color='blue')
 plt.legend(['Train Loss'], loc='upper right')
 plt.xlabel('number of training examples seen')
