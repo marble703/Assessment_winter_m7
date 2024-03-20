@@ -20,9 +20,9 @@ batch_size_test = 50   #测试时的批次大小，调整没啥影响，一般�
 #learning_rate = 1e-3   #学习率，控制参数调整幅度。太大不稳定，可能跳过全局最小值；太小收敛速度慢，易陷入局部最小值
 log_interval = 100     #日志输出间隔，控制输出训练信息频率
 
-init_points = 3
-n_iter = 2
-n = init_points + n_iter
+init_points = 2 #初始探索点数量
+n_iter = 5 #迭代次数
+total_epoch = init_points + n_iter
 
 pbounds = { 'learning_rate_log': (-5, -1),  
             'beta1': (0.9, 0.999), #控制一阶矩（梯度的指数加权平均）的衰减速度,其实我也不知道这是啥
@@ -32,13 +32,15 @@ pbounds = { 'learning_rate_log': (-5, -1),
 random_seed = 1 #随机种子，用于复现结果
 torch.manual_seed(random_seed) #设置随机种子
 
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
+#使用确定性算法确保结果可复现
+
 # 检查是否有可用的GPU
 if torch.cuda.is_available():
     device = torch.device("cuda")
 else:
     device = torch.device("cpu")
-    
-device = torch.device("cpu")
     
 train_loader = torch.utils.data.DataLoader(
     torchvision.datasets.MNIST('./data/', #数据集本地存储路径，没有则创建
@@ -85,10 +87,10 @@ network = Net().to(device)
 train_losses = [] #存储每个epoch的平均训练损失
 train_counter = [] #存储每个epoch结束时的总训练步数
 test_losses = [] #存储每个epoch的平均测试损失
-test_counter = [i * len(train_loader.dataset) for i in range(n + 1)] #存储每个epoch结束时的总测试步数
+test_counter = [i * len(train_loader.dataset) for i in range(total_epoch + 1)] #存储每个epoch结束时的总测试步数
 accuracy_counter = [] #存储每个 epoch 的准确率
 
-epoch = 0
+epoch = -1 #为了让第一个epoch为第零个
 
 #定义训练函数
 def train(learning_rate_log, beta1, beta2, weight_decay_log):
@@ -119,11 +121,12 @@ def train(learning_rate_log, beta1, beta2, weight_decay_log):
                                                                            100. * batch_idx / len(train_loader),
                                                                            loss.item()))
             train_losses.append(loss.item())
-            train_counter.append((batch_idx * batch_size_train) + ((epoch) * len(train_loader.dataset)))
+            train_counter.append((batch_idx * batch_size_train) + (epoch * len(train_loader.dataset)))
             torch.save(network.state_dict(), './model.pth')       #保存当前的神经网络状态
             torch.save(optimizer.state_dict(), './optimizer.pth') #保存当前的优化器状态
     return test(epoch)
 
+#定义测试函数
 def test(epoch):
     network.eval() #将神经网络设置为评估（测试）模式
     test_loss = 0  #初始化测试损失，用于计算测试集上的累积损失
@@ -141,45 +144,60 @@ def test(epoch):
     
     return 100. * correct / len(test_loader.dataset)
 
-
+#定义贝叶斯优化器
 bayesian_optimizer = BayesianOptimization(
     f=train,
     pbounds=pbounds,
     verbose=2, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
-    random_state=1,
-)
+    random_state=random_seed)
 
+#进行优化
 bayesian_optimizer.maximize(
     init_points = init_points,
-    n_iter = n_iter,)
+    n_iter = n_iter)
 
-# train loss
-fig = plt.figure()
+#输出最优参数组合
+print(bayesian_optimizer.max)
 
+def draw_train_loss():
+    fig = plt.figure()
 
-plt.plot(train_counter, train_losses, color='blue')
-plt.legend(['Train Loss'], loc='upper right')
-plt.xlabel('number of training examples seen')
-plt.ylabel('negative log likelihood loss')
-plt.show()
-fig = plt.figure()
+    for i in range(total_epoch):
+        start_index = i * len(train_counter) // total_epoch
+        end_index = (i + 1) * len(train_counter) // total_epoch
+        plt.plot(train_counter[start_index:end_index], train_losses[start_index:end_index])
+    
+    plt.legend(['Train loss'], loc='upper right')
+    plt.xlabel('number of training examples seen')
+    plt.ylabel('negative log likelihood loss')
+    plt.show()
 
-# test loss
-fig = plt.figure()
-plt.plot([x / len(train_loader.dataset) for x in test_counter][:-1], test_losses, color='red')
-plt.legend(['Test Loss'], loc='upper right')
-plt.xlabel('epoch')
-plt.ylabel('negative log likelihood loss')
-plt.show()
-fig = plt.figure()
+def draw_test_loss():
+    fig = plt.figure()
+    plt.plot([x / len(train_loader.dataset) for x in test_counter][:init_points], 
+             test_losses[:init_points], 
+             color='red', label='Test loss (Init Points)')
+    plt.plot([x / len(train_loader.dataset) for x in test_counter][init_points:-1], 
+             test_losses[init_points:], 
+             color='blue', label='Test loss (n_iter)')
+    plt.legend(['Test Loss'], loc='upper left')
+    plt.xlabel('epoch')
+    plt.ylabel('negative log likelihood loss')
+    plt.show()
 
-# accuracy
-fig = plt.figure()
-plt.plot([x / len(train_loader.dataset) for x in test_counter][:-1], [x.item() for x in accuracy_counter], color='red')
-plt.legend(['Accuracy'], loc='upper left')
-plt.xlabel('epoch')
-plt.ylabel('accuracy')
-plt.show()
-fig = plt.figure()
+def draw_accuracy():
+    fig = plt.figure()
+    plt.plot([x / len(train_loader.dataset) for x in test_counter][:init_points], 
+             [x.item() for x in accuracy_counter[:init_points]], 
+             color='red', label='Accuracy (Init Points)')
+    plt.plot([x / len(train_loader.dataset) for x in test_counter][init_points:-1], 
+             [x.item() for x in accuracy_counter[init_points:]], 
+             color='blue', label='Accuracy (n_iter)')
+    plt.legend(loc='lower left')
+    plt.xlabel('epoch')
+    plt.ylabel('accuracy')
+    plt.show()
 
-
+draw_train_loss()
+draw_test_loss()
+draw_accuracy()
