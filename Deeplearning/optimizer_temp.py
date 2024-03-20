@@ -42,27 +42,23 @@ if torch.cuda.is_available():
 else:
     device = torch.device("cpu")
     
+device = torch.device("cpu")
+
 train_loader = torch.utils.data.DataLoader(
-    torchvision.datasets.MNIST('./data/', #数据集本地存储路径，没有则创建
-                               train=True, #加载训练集
+    torchvision.datasets.MNIST('./data/',     #数据集本地存储路径，没有则创建
+                               train=True,    #加载训练集
                                download=True, #如果本地不存在数据集，会下载数据集
-                               transform=torchvision.transforms.ToTensor(), #将图像转换为PyTorch张量                          
-                               ),
-    batch_size=batch_size_train, #设置批次大小
-    shuffle=True,  #每次打乱
-    )   
+                               transform=torchvision.transforms.ToTensor(),),#将图像转换为PyTorch张量                          
+    batch_size = batch_size_train, #设置批次大小
+    shuffle=True)                 #每次打乱   
 
 test_loader = torch.utils.data.DataLoader(
     torchvision.datasets.MNIST('./data/',
-                               train=False,
+                               train=False,   #加载测试集
                                download=True,
-                               transform=torchvision.transforms.Compose([
-                                   torchvision.transforms.ToTensor(),
-                                   ]),
-                               ),
-    batch_size=batch_size_test,
-    shuffle=True,
-    )
+                               transform=torchvision.transforms.ToTensor(),),
+    batch_size = batch_size_test,
+    shuffle=True)
 
 #定义神经网络
 class Net(nn.Module):
@@ -126,7 +122,6 @@ def train(learning_rate_log, beta1, beta2, weight_decay_log):
             torch.save(optimizer.state_dict(), './optimizer.pth') #保存当前的优化器状态
     return test(epoch)
 
-#定义测试函数
 def test(epoch):
     network.eval() #将神经网络设置为评估（测试）模式
     test_loss = 0  #初始化测试损失，用于计算测试集上的累积损失
