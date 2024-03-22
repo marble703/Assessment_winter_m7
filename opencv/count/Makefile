@@ -57,7 +57,7 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv
+CMAKE_SOURCE_DIR = /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count
@@ -129,29 +129,29 @@ cv/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/build
 .PHONY : cv/fast
 
-main.o: main.cpp.o
-.PHONY : main.o
+temp.o: temp.cpp.o
+.PHONY : temp.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/main.cpp.o
-.PHONY : main.cpp.o
+temp.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/temp.cpp.o
+.PHONY : temp.cpp.o
 
-main.i: main.cpp.i
-.PHONY : main.i
+temp.i: temp.cpp.i
+.PHONY : temp.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/main.cpp.i
-.PHONY : main.cpp.i
+temp.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/temp.cpp.i
+.PHONY : temp.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+temp.s: temp.cpp.s
+.PHONY : temp.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/main.cpp.s
-.PHONY : main.cpp.s
+temp.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/temp.cpp.s
+.PHONY : temp.cpp.s
 
 # Help Target
 help:
@@ -162,9 +162,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... cv"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... temp.o"
+	@echo "... temp.i"
+	@echo "... temp.s"
 .PHONY : help
 
 

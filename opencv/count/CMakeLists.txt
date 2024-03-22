@@ -8,6 +8,6 @@ include_directories(
     ${OpenCV_DIRS}
 )
 
-add_executable(cv main.cpp)
+add_executable(cv temp.cpp)
 
 target_link_libraries(cv ${OpenCV_LIBS})

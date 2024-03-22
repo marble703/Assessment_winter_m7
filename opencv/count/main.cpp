@@ -36,7 +36,7 @@ int main() {
         cv::Rect boundingRect = cv::boundingRect(contours[i]);  
 
         // 检查矩形框的大小是否满足要求
-        if (boundingRect.width >= 70 && boundingRect.height >= 70) {
+        if (boundingRect.width >= 150 && boundingRect.height >= 150) {
 
             count += 1;
 

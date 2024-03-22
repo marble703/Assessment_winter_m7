@@ -145,7 +145,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=cv
+CMAKE_PROJECT_NAME:STATIC=ccamera
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -213,13 +213,13 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 OpenCV_DIR:PATH=/usr/local/lib/cmake/opencv4
 
 //Value Computed by CMake
-cv_BINARY_DIR:STATIC=/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count
+ccamera_BINARY_DIR:STATIC=/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count
 
 //Value Computed by CMake
-cv_IS_TOP_LEVEL:STATIC=ON
+ccamera_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
-cv_SOURCE_DIR:STATIC=/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv
+ccamera_SOURCE_DIR:STATIC=/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count
 
 
 ########################
@@ -306,7 +306,7 @@ CMAKE_GENERATOR_PLATFORM:INTERNAL=
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
 //Source directory with the top level CMakeLists.txt file for this
 // project
-CMAKE_HOME_DIRECTORY:INTERNAL=/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv
+CMAKE_HOME_DIRECTORY:INTERNAL=/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count
 //Install .so files without execute permission.
 CMAKE_INSTALL_SO_NO_EXE:INTERNAL=1
 //ADVANCED property for variable: CMAKE_LINKER
