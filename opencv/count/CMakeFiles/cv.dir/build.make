@@ -69,28 +69,28 @@ include CMakeFiles/cv.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/cv.dir/flags.make
 
-CMakeFiles/cv.dir/temp.cpp.o: CMakeFiles/cv.dir/flags.make
-CMakeFiles/cv.dir/temp.cpp.o: temp.cpp
-CMakeFiles/cv.dir/temp.cpp.o: CMakeFiles/cv.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/cv.dir/temp.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cv.dir/temp.cpp.o -MF CMakeFiles/cv.dir/temp.cpp.o.d -o CMakeFiles/cv.dir/temp.cpp.o -c /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count/temp.cpp
+CMakeFiles/cv.dir/main.cpp.o: CMakeFiles/cv.dir/flags.make
+CMakeFiles/cv.dir/main.cpp.o: main.cpp
+CMakeFiles/cv.dir/main.cpp.o: CMakeFiles/cv.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/cv.dir/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cv.dir/main.cpp.o -MF CMakeFiles/cv.dir/main.cpp.o.d -o CMakeFiles/cv.dir/main.cpp.o -c /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count/main.cpp
 
-CMakeFiles/cv.dir/temp.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/cv.dir/temp.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count/temp.cpp > CMakeFiles/cv.dir/temp.cpp.i
+CMakeFiles/cv.dir/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/cv.dir/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count/main.cpp > CMakeFiles/cv.dir/main.cpp.i
 
-CMakeFiles/cv.dir/temp.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/cv.dir/temp.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count/temp.cpp -o CMakeFiles/cv.dir/temp.cpp.s
+CMakeFiles/cv.dir/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/cv.dir/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count/main.cpp -o CMakeFiles/cv.dir/main.cpp.s
 
 # Object files for target cv
 cv_OBJECTS = \
-"CMakeFiles/cv.dir/temp.cpp.o"
+"CMakeFiles/cv.dir/main.cpp.o"
 
 # External object files for target cv
 cv_EXTERNAL_OBJECTS =
 
-cv: CMakeFiles/cv.dir/temp.cpp.o
+cv: CMakeFiles/cv.dir/main.cpp.o
 cv: CMakeFiles/cv.dir/build.make
 cv: /usr/local/lib/libopencv_gapi.so.4.9.0
 cv: /usr/local/lib/libopencv_highgui.so.4.9.0

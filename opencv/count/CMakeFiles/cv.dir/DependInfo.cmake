@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count/temp.cpp" "CMakeFiles/cv.dir/temp.cpp.o" "gcc" "CMakeFiles/cv.dir/temp.cpp.o.d"
+  "/media/chenyian/Data/programme/Visual/Assessment_winter_m7/opencv/count/main.cpp" "CMakeFiles/cv.dir/main.cpp.o" "gcc" "CMakeFiles/cv.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links.

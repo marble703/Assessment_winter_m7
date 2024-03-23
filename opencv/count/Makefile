@@ -129,29 +129,29 @@ cv/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/build
 .PHONY : cv/fast
 
-temp.o: temp.cpp.o
-.PHONY : temp.o
+main.o: main.cpp.o
+.PHONY : main.o
 
 # target to build an object file
-temp.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/temp.cpp.o
-.PHONY : temp.cpp.o
+main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/main.cpp.o
+.PHONY : main.cpp.o
 
-temp.i: temp.cpp.i
-.PHONY : temp.i
+main.i: main.cpp.i
+.PHONY : main.i
 
 # target to preprocess a source file
-temp.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/temp.cpp.i
-.PHONY : temp.cpp.i
+main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-temp.s: temp.cpp.s
-.PHONY : temp.s
+main.s: main.cpp.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-temp.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/temp.cpp.s
-.PHONY : temp.cpp.s
+main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cv.dir/build.make CMakeFiles/cv.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -162,9 +162,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... cv"
-	@echo "... temp.o"
-	@echo "... temp.i"
-	@echo "... temp.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 
