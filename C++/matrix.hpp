@@ -143,29 +143,29 @@ Matrix& operator+(const Matrix& other){ //重载+运算符(加法)
     }
 
     Matrix* result_m = new Matrix(rows, cols, result);
-    return *result_m;
-}
+        return *result_m;
+    }
 
 
     Matrix& operator-(const Matrix& other){ //重载-运算符(减法)
-    if (rows != other.rows || cols != other.cols) {
-        throw std::invalid_argument("Matrix dimensions are not compatible for subtraction.");
-    }
-
-    int** result = new int*[rows];
-    for (int i = 0; i < rows; i++) {
-        result[i] = new int[cols];
-    }
-
-    for (int i = 0; i < rows; i++){
-        for (int j = 0; j < cols; j++){
-            result[i][j] = matrix[i][j] - other.matrix[i][j];
+        if (rows != other.rows || cols != other.cols) {
+            throw std::invalid_argument("Matrix dimensions are not compatible for subtraction.");
         }
-    }
+
+        int** result = new int*[rows];
+        for (int i = 0; i < rows; i++) {
+            result[i] = new int[cols];
+        }
+
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < cols; j++){
+                result[i][j] = matrix[i][j] - other.matrix[i][j];
+            }
+        }
 
     Matrix* result_m = new Matrix(rows, cols, result);
-    return *result_m;
-}
+     return *result_m;
+    }
 
     Matrix operator/(const Matrix& other) { //重载/运算符(除法)
         if (cols != other.rows) {

@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 
 from bayes_opt import BayesianOptimization
 
+n_epochs = 3          #每个超参数组合的学习次数
+
 batch_size_train = 64 #训练时的批次大小，根据拟合程度和硬件性能调整。太大过拟合，占用内存大，训练速度慢；太小易受噪声影响，易陷入局部最小值
 batch_size_test = 64   #测试时的批次大小，调整没啥影响，一般和训练批次大小相似
 #learning_rate = 1e-3   #学习率，控制参数调整幅度。太大不稳定，可能跳过全局最小值；太小收敛速度慢，易陷入局部最小值
@@ -135,8 +137,9 @@ def test(epoch):
     return accuracy
 
 def t_t(learning_rate_log, beta1, beta2, weight_decay_log):
-    train(learning_rate_log, beta1, beta2, weight_decay_log)
-    target = test(epoch)
+    for i in range(n_epochs):
+        train(learning_rate_log, beta1, beta2, weight_decay_log)
+        target = test(epoch)
     return target
 
 bayesian_optimizer = BayesianOptimization(
