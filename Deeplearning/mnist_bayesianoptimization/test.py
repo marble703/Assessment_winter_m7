@@ -15,9 +15,9 @@ batch_size_test = 64   #测试时的批次大小，调整没啥影响，一般�
 #learning_rate = 1e-3   #学习率，控制参数调整幅度。太大不稳定，可能跳过全局最小值；太小收敛速度慢，易陷入局部最小值
 log_interval = 100     #日志输出间隔，控制输出训练信息频率
 
-init_points = 1 #初始探索点数量
-n_iter = 5 #迭代次数
-total_epoch = init_points + n_iter
+init_points = 1 #初始探索点数量，建议5
+n_iter = 5 #迭代次数，建议20
+total_epoch = init_points + n_iter #总超参数寻找轮数
 
 pbounds = { 'learning_rate_log': (-5, -1),  
             'beta1': (0.9, 0.999), #控制一阶矩（梯度的指数加权平均）的衰减速度,其实我也不知道这是啥
@@ -159,41 +159,117 @@ def draw_train_loss():
         start_index = i * len(train_counter) // total_epoch
         end_index = (i + 1) * len(train_counter) // total_epoch
         plt.plot(train_counter[start_index:end_index], train_losses[start_index:end_index])
-    
+    plt.title('train loss')
     plt.legend(['Train loss'], loc='upper right')
+    plt.xlabel('number of training examples seen')
+    plt.ylabel('negative log likelihood loss')
+    plt.show()
+
+def draw_train_loss2():
+    fig = plt.figure()
+
+    for i in range(total_epoch):
+        start_index = i * len(train_counter) // total_epoch
+        end_index = (i + 1) * len(train_counter) // total_epoch
+        if total_epoch <= 6: 
+            plt.plot(train_counter[0: end_index - start_index], train_losses[start_index: end_index],
+                 label = 'epoch' + str(i))
+        else:
+            plt.plot(train_counter[0: end_index - start_index], train_losses[start_index: end_index])
+            plt.legend(['epoch'], loc='upper right')
+    plt.title('train loss')
     plt.xlabel('number of training examples seen')
     plt.ylabel('negative log likelihood loss')
     plt.show()
 
 def draw_test_loss():
     fig = plt.figure()
-    plt.plot([x / len(train_loader.dataset) for x in test_counter][:init_points], 
-             test_losses[:init_points], 
+    x_init = [x for x in range(len(test_counter) * n_epochs)]
+    plt.plot(x_init[: n_epochs * init_points], 
+             test_losses[: n_epochs * init_points], 
              color='red', label='Test loss (Init Points)')
-    plt.plot([x / len(train_loader.dataset) for x in test_counter][init_points:-1], 
-             test_losses[init_points:], 
+    plt.plot(x_init[n_epochs * init_points: -(n_epochs)], 
+             test_losses[n_epochs * init_points:], 
              color='blue', label='Test loss (n_iter)')
-    plt.legend(['Test Loss'], loc='upper right')
+    plt.legend(loc='upper right')
+    plt.title('test loss')
     plt.xlabel('epoch')
     plt.ylabel('negative log likelihood loss')
     plt.show()
 
 def draw_accuracy():
     fig = plt.figure()
-    plt.plot([x / len(train_loader.dataset) for x in test_counter][:init_points], 
-             [x.item() for x in accuracy_counter[:init_points]], 
-             color='red', label='Accuracy (Init Points)')
-    plt.plot([x / len(train_loader.dataset) for x in test_counter][init_points:-1], 
-             [x.item() for x in accuracy_counter[init_points:]], 
-             color='blue', label='Accuracy (n_iter)')
+    x_init = [x for x in range(len(test_counter) * n_epochs)]
+    plt.plot(x_init[: n_epochs * init_points], 
+             [x.item() for x in accuracy_counter[:n_epochs * init_points]], 
+             color='red', label='Test loss (Init Points)')
+    plt.plot(x_init[n_epochs * init_points: -(n_epochs)], 
+             [x.item() for x in accuracy_counter[n_epochs * init_points:]], 
+             color='blue', label='Test loss (n_iter)')
     plt.legend(loc='lower right')
+    plt.title('accuracy')
+    plt.xlabel('epoch')
+    plt.ylabel('accuracy')
+    plt.show()
+
+def draw_accuracy2():
+    fig = plt.figure()
+    x_init = [x for x in range(len(test_counter) * n_epochs)]
+    if total_epoch <= 6: 
+        for i in range(init_points):  
+            plt.plot(x_init[: n_epochs], 
+                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]], 
+                 label='Test loss (Init Points) epoch' + str(i))
+        for i in range(n_iter):
+            plt.plot(x_init[: n_epochs], 
+                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]], 
+                 label='Test loss (n_iter) epoch' + str(i))
+    else:
+        for i in range(init_points):  
+            plt.plot(x_init[: n_epochs], 
+                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]])
+        plt.legend(['Test loss (Init Points) epoch'], loc='lower right')
+        for i in range(n_iter):
+            plt.plot(x_init[: n_epochs], 
+                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]])
+        plt.legend(['Test loss (n_iter) epoch'], loc='lower right')
+    plt.title('accuracy')
+    plt.xlabel('epoch')
+    plt.ylabel('accuracy')
+    plt.show()
+
+def draw_accuracy3():
+    fig = plt.figure()
+    plt.ylim(96, 100)
+    x_init = [x for x in range(len(test_counter) * n_epochs)]
+    if total_epoch <= 6: 
+        for i in range(init_points):  
+            plt.plot(x_init[: n_epochs], 
+                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]], 
+                 label='Test loss (Init Points) epoch' + str(i))
+        for i in range(n_iter):
+            plt.plot(x_init[: n_epochs], 
+                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]], 
+                 label='Test loss (n_iter) epoch' + str(i))
+    else:
+        for i in range(init_points):  
+            plt.plot(x_init[: n_epochs], 
+                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]])
+        plt.legend(['Test loss (Init Points) epoch'], loc='lower right')
+        for i in range(n_iter):
+            plt.plot(x_init[: n_epochs], 
+                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]])
+        plt.legend(['Test loss (n_iter) epoch'], loc='lower right')
+    plt.title('accuracy(local magnification)')
     plt.xlabel('epoch')
     plt.ylabel('accuracy')
     plt.show()
 
 draw_train_loss()
+draw_train_loss2()
 draw_test_loss()
 draw_accuracy()
+draw_accuracy2()
 
 print("""\nbest params combo:
          learning_rate: {};
@@ -205,3 +281,33 @@ print("""\nbest params combo:
                                bayesian_optimizer.max["params"]["beta2"],
                                10 ** bayesian_optimizer.max["params"]["weight_decay_log"],
                                bayesian_optimizer.max["target"]))
+    
+'''    
+def draw_train_loss2():#
+    fig = plt.figure()
+
+    for i in range(total_epoch):
+        start_index = i * len(train_counter) // total_epoch
+        end_index = (i + 1) * len(train_counter) // total_epoch
+        plt.plot(train_counter[0: end_index - start_index], train_losses[start_index: end_index],
+                 label = 'epoch' + str(i))
+        plt.legend(loc='upper right')
+        
+    plt.xlabel('number of training examples seen')
+    plt.ylabel('negative log likelihood loss')
+    plt.show()
+    
+def draw_test_loss2():
+    fig = plt.figure()
+    x_init = [x for x in range(len(test_counter) * n_epochs)]
+    plt.plot(x_init[: n_epochs * init_points], 
+             test_losses[: n_epochs * init_points], 
+             color='red', label='Test loss (Init Points)')
+    plt.plot(x_init[n_epochs * init_points: -(n_epochs)], 
+             test_losses[n_epochs * init_points:], 
+             color='blue', label='Test loss (n_iter)')
+    plt.legend(loc='upper right')
+    plt.xlabel('epoch')
+    plt.ylabel('negative log likelihood loss')
+    plt.show()
+'''
