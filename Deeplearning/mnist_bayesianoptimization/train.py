@@ -8,15 +8,15 @@ import matplotlib.pyplot as plt
 
 from bayes_opt import BayesianOptimization
 
-n_epochs = 3          #每个超参数组合的学习次数
+n_epochs = 2          #每个超参数组合的学习次数
 
 batch_size_train = 64 #训练时的批次大小，根据拟合程度和硬件性能调整。太大过拟合，占用内存大，训练速度慢；太小易受噪声影响，易陷入局部最小值
 batch_size_test = 64   #测试时的批次大小，调整没啥影响，一般和训练批次大小相似
 #learning_rate = 1e-3   #学习率，控制参数调整幅度。太大不稳定，可能跳过全局最小值；太小收敛速度慢，易陷入局部最小值
 log_interval = 100     #日志输出间隔，控制输出训练信息频率
 
-init_points = 1 #初始探索点数量，建议5
-n_iter = 5 #迭代次数，建议20
+init_points = 2 #初始探索点数量，建议5
+n_iter = 3 #迭代次数，建议20
 total_epoch = init_points + n_iter #总超参数寻找轮数
 
 pbounds = { 'learning_rate_log': (-5, -1),  
@@ -37,7 +37,7 @@ if torch.cuda.is_available():
 else:
     device = torch.device("cpu")
     
-device = torch.device("cpu")
+#device = torch.device("cpu")
 
 train_loader = torch.utils.data.DataLoader(
     torchvision.datasets.MNIST('./data/',     #数据集本地存储路径，没有则创建
@@ -145,6 +145,7 @@ def t_t(learning_rate_log, beta1, beta2, weight_decay_log):
 bayesian_optimizer = BayesianOptimization(
     f = t_t,
     pbounds = pbounds,
+    random_state = random_seed,
     verbose = 2, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
     random_state = random_seed)
 
