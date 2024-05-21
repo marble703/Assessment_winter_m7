@@ -50,7 +50,7 @@ class Net(nn.Module):
 
 load_path = 'model.pt'
 network = Net()
-network = torch.load(load_path)
+#network = torch.load(load_path)
 
 def test(epoch):
     network.eval() #将神经网络设置为评估（测试）模式
