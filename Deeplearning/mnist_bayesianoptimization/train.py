@@ -40,6 +40,7 @@ else:
 #device = torch.device("cpu")
 
 train_loader = torch.utils.data.DataLoader(
+    
     torchvision.datasets.MNIST('./data/',     #数据集本地存储路径，没有则创建
                                train=True,    #加载训练集
                                download=True, #如果本地不存在数据集，会下载数据集
@@ -125,7 +126,7 @@ def test(epoch):
         for data, target in test_loader:
             data, target = data.to(device), target.to(device)
             output = network(data)
-            test_loss += F.nll_loss(output, target, reduction='sum').item()
+            test_loss += F.nll_loss(output, target, reduction='sum')
             pred = output.data.max(1, keepdim=True)[1]
             correct += pred.eq(target.data.view_as(pred)).sum()
     test_loss /= len(test_loader.dataset)
@@ -134,7 +135,7 @@ def test(epoch):
 
     accuracy = 100. * correct / len(test_loader.dataset)
     
-    return accuracy
+    return accuracy.cpu()
 
 def t_t(learning_rate_log, beta1, beta2, weight_decay_log):
     for i in range(n_epochs):
@@ -182,7 +183,7 @@ def draw_train_loss2():
     plt.ylabel('negative log likelihood loss')
     plt.show()
 
-def draw_test_loss():
+#def draw_test_loss():
     fig = plt.figure()
     x_init = [x for x in range(len(test_counter) * n_epochs)]
     plt.plot(x_init[: n_epochs * init_points], 
@@ -264,10 +265,29 @@ def draw_accuracy3():
     plt.xlabel('epoch')
     plt.ylabel('accuracy')
     plt.show()
+    
+test_losses = [x.cpu() for x in test_losses]
 
 draw_train_loss()
 draw_train_loss2()
-draw_test_loss()
+
+
+#draw_test_loss()
+fig = plt.figure()
+x_init = [x for x in range(len(test_counter) * n_epochs)]
+plt.plot(x_init[: n_epochs * init_points], 
+         test_losses[: n_epochs * init_points], 
+         color='red', label='Test loss (Init Points)')
+plt.plot(x_init[n_epochs * init_points: -(n_epochs)], 
+         test_losses[n_epochs * init_points:], 
+         color='blue', label='Test loss (n_iter)')
+plt.legend(loc='upper right')
+plt.title('test loss')
+plt.xlabel('epoch')
+plt.ylabel('negative log likelihood loss')
+plt.show()
+
+
 draw_accuracy()
 draw_accuracy2()
 
