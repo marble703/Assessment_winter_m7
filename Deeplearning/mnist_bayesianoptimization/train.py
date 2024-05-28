@@ -27,9 +27,12 @@ pbounds = { 'learning_rate_log': (-5, -1),
 random_seed = 1 #随机种子，用于复现结果
 torch.manual_seed(random_seed) #设置随机种子
 
+#使用确定性算法确保结果可复现
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
-#使用确定性算法确保结果可复现
+
+#权重存储路径
+save_path = 'model.pt'
 
 # 检查是否有可用的CUDA
 if torch.cuda.is_available():
@@ -82,6 +85,7 @@ train_counter = [] #存储每个epoch结束时的总训练步数
 test_losses = [] #存储每个epoch的平均测试损失
 test_counter = [i * len(train_loader.dataset) for i in range(total_epoch + 1)] #存储每个epoch结束时的总测试步数
 accuracy_counter = [] #存储每个 epoch 的准确率
+best_accuracy = 0
 
 epoch = -1 #为了让第一个epoch为第零个
 
@@ -119,6 +123,8 @@ def train(learning_rate_log, beta1, beta2, weight_decay_log):
             torch.save(optimizer.state_dict(), './optimizer.pth') #保存当前的优化器状态
 
 def test(epoch):
+    global best_accuracy
+    
     network.eval() #将神经网络设置为评估（测试）模式
     test_loss = 0  #初始化测试损失，用于计算测试集上的累积损失
     correct = 0    #初始化正确预测的样本数，用于计算准确率
@@ -126,16 +132,22 @@ def test(epoch):
         for data, target in test_loader:
             data, target = data.to(device), target.to(device)
             output = network(data)
-            test_loss += F.nll_loss(output, target, reduction='sum')
+            test_loss += F.nll_loss(output, target, reduction='sum').item()
             pred = output.data.max(1, keepdim=True)[1]
-            correct += pred.eq(target.data.view_as(pred)).sum()
+            correct += pred.eq(target.data.view_as(pred)).sum().item()
     test_loss /= len(test_loader.dataset)
     test_losses.append(test_loss)
     accuracy_counter.append(100. * correct / len(test_loader.dataset))
 
     accuracy = 100. * correct / len(test_loader.dataset)
     
-    return accuracy.cpu()
+    if accuracy > best_accuracy:
+        best_accuracy = accuracy
+        
+
+        torch.save(network, save_path)
+    
+    return accuracy
 
 def t_t(learning_rate_log, beta1, beta2, weight_decay_log):
     for i in range(n_epochs):
@@ -183,7 +195,7 @@ def draw_train_loss2():
     plt.ylabel('negative log likelihood loss')
     plt.show()
 
-#def draw_test_loss():
+def draw_test_loss():
     fig = plt.figure()
     x_init = [x for x in range(len(test_counter) * n_epochs)]
     plt.plot(x_init[: n_epochs * init_points], 
@@ -202,10 +214,10 @@ def draw_accuracy():
     fig = plt.figure()
     x_init = [x for x in range(len(test_counter) * n_epochs)]
     plt.plot(x_init[: n_epochs * init_points], 
-             [x.item() for x in accuracy_counter[:n_epochs * init_points]], 
+             [x for x in accuracy_counter[:n_epochs * init_points]], 
              color='red', label='Test loss (Init Points)')
     plt.plot(x_init[n_epochs * init_points: -(n_epochs)], 
-             [x.item() for x in accuracy_counter[n_epochs * init_points:]], 
+             [x for x in accuracy_counter[n_epochs * init_points:]], 
              color='blue', label='Test loss (n_iter)')
     plt.legend(loc='lower right')
     plt.title('accuracy')
@@ -215,24 +227,24 @@ def draw_accuracy():
 
 def draw_accuracy2():
     fig = plt.figure()
-    x_init = [x for x in range(len(test_counter) * n_epochs)]
+    x_init = [x for x in range(total_epoch * n_epochs)]
     if total_epoch <= 6: 
         for i in range(init_points):  
             plt.plot(x_init[: n_epochs], 
-                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]], 
+                 [x for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]], 
                  label='Test loss (Init Points) epoch' + str(i))
         for i in range(n_iter):
             plt.plot(x_init[: n_epochs], 
-                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]], 
+                 [x for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]], 
                  label='Test loss (n_iter) epoch' + str(i))
     else:
         for i in range(init_points):  
             plt.plot(x_init[: n_epochs], 
-                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]])
+                 [x for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]])
         plt.legend(['Test loss (Init Points) epoch'], loc='lower right')
         for i in range(n_iter):
             plt.plot(x_init[: n_epochs], 
-                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]])
+                 [x for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]])
         plt.legend(['Test loss (n_iter) epoch'], loc='lower right')
     plt.title('accuracy')
     plt.xlabel('epoch')
@@ -242,65 +254,54 @@ def draw_accuracy2():
 def draw_accuracy3():
     fig = plt.figure()
     plt.ylim(96, 100)
-    x_init = [x for x in range(len(test_counter) * n_epochs)]
+    x_init = [x for x in range(total_epoch * n_epochs)]
     if total_epoch <= 6: 
         for i in range(init_points):  
             plt.plot(x_init[: n_epochs], 
-                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]], 
+                 [x for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]], 
                  label='Test loss (Init Points) epoch' + str(i))
         for i in range(n_iter):
             plt.plot(x_init[: n_epochs], 
-                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]], 
+                 [x for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]], 
                  label='Test loss (n_iter) epoch' + str(i))
     else:
         for i in range(init_points):  
             plt.plot(x_init[: n_epochs], 
-                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]])
+                 [x for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]])
         plt.legend(['Test loss (Init Points) epoch'], loc='lower right')
         for i in range(n_iter):
             plt.plot(x_init[: n_epochs], 
-                 [x.item() for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]])
+                 [x for x in accuracy_counter[n_epochs * i: n_epochs * (i + 1)]])
         plt.legend(['Test loss (n_iter) epoch'], loc='lower right')
     plt.title('accuracy(local magnification)')
     plt.xlabel('epoch')
     plt.ylabel('accuracy')
     plt.show()
     
-test_losses = [x.cpu() for x in test_losses]
+#test_losses = [x.cpu() for x in test_losses]
 
 draw_train_loss()
 draw_train_loss2()
 
 
-#draw_test_loss()
-fig = plt.figure()
-x_init = [x for x in range(len(test_counter) * n_epochs)]
-plt.plot(x_init[: n_epochs * init_points], 
-         test_losses[: n_epochs * init_points], 
-         color='red', label='Test loss (Init Points)')
-plt.plot(x_init[n_epochs * init_points: -(n_epochs)], 
-         test_losses[n_epochs * init_points:], 
-         color='blue', label='Test loss (n_iter)')
-plt.legend(loc='upper right')
-plt.title('test loss')
-plt.xlabel('epoch')
-plt.ylabel('negative log likelihood loss')
-plt.show()
+draw_test_loss()
 
 
 draw_accuracy()
 draw_accuracy2()
 
-print("""\nbest params combo:
+print("""best accuracy:{}
+best params combo:
          learning_rate: {};
          beta1:{};
          beta2:{};
          weight_decay:{};\n
-         accuracy:{}""".format(10 ** bayesian_optimizer.max["params"]["learning_rate_log"],
+pt saved to {}""".format(bayesian_optimizer.max["target"],
+                               10 ** bayesian_optimizer.max["params"]["learning_rate_log"],
                                bayesian_optimizer.max["params"]["beta1"],
                                bayesian_optimizer.max["params"]["beta2"],
                                10 ** bayesian_optimizer.max["params"]["weight_decay_log"],
-                               bayesian_optimizer.max["target"]))
+                               save_path))
     
 '''    
 def draw_train_loss2():#
